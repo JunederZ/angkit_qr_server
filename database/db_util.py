@@ -18,8 +18,10 @@ class DBUtil:
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()
             cursor.execute("select password from public.users where username like %s;", (username,))
-            conn.commit()
 
+            if PasswordHasher.verify(password=password, hash=cursor.fetchone()):
+                return 'ok'
+            return 'wrong password'
 
     def add_user(self, usernameIn, passwordIn, category):
         if self.check_user_exist(usernameIn):
