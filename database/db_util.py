@@ -2,6 +2,7 @@ import os
 import psycopg
 from dotenv import load_dotenv
 from argon2 import PasswordHasher
+import argon2
 
 load_dotenv()
 Postgres_URI = os.getenv('POSTGRES_URI')
@@ -19,9 +20,11 @@ class DBUtil:
             cursor = conn.cursor()
             cursor.execute("select password from public.users where username like %s;", (username,))
 
-            if PasswordHasher.verify(password=password, hash=cursor.fetchone()):
+            try:
+                PasswordHasher().verify(password=password, hash=cursor.fetchone()[0])
                 return 'ok'
-            return 'wrong password'
+            except argon2.exceptions.VerifyMismatchError as e:
+                return 'wrong password'
 
     def add_user(self, usernameIn, passwordIn, category):
         if self.check_user_exist(usernameIn):
@@ -62,5 +65,4 @@ class DBUtil:
             return False
 
 DbUtil = DBUtil()
-# DbUtil.remove_user('test')
-print(DbUtil.add_user(passwordIn="asd", usernameIn="sad", category="admin"))
+print(DbUtil.user_login(password="assd", username="sad"))
