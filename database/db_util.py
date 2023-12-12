@@ -30,7 +30,7 @@ class DBUtil:
             except argon2.exceptions.VerifyMismatchError as e:
                 return 'wrong password'
 
-    def add_user(self, usernameIn, passwordIn, category, json=None):
+    def add_user(self, usernameIn, passwordIn, category):
         if self.check_user_exists(usernameIn):
             return "User already exists"
         ph = PasswordHasher()
@@ -81,7 +81,7 @@ class DBUtil:
             cursor.execute("SELECT * FROM public.distributor where id like %s;", (dataBatch[3],))
             dataDistributor = DistributorModel.DistributorModel(cursor.fetchone())
             if dataBatch:
-                disMode = BatchModel.BatchModel((
+                batchModel = BatchModel.BatchModel((
                     dataBatch[0],
                     dataBatch[1],
                     dataPeternak,
@@ -92,17 +92,35 @@ class DBUtil:
                     dataBatch[7],
                     )
                 )
-                return disMode
+                return batchModel
             return None
 
+    def add_distributor(self, disModel):
+        with psycopg.connect(conninfo=Postgres_URI) as conn:
+            cursor = conn.cursor()
+            cursor.execute("select * from public.distributor where id like %s;", (disModel.id,))
+            if cursor.fetchone():
+                return "already exists"
+            cursor.execute("INSERT INTO public.distributor (nama, lokasi, id) VALUES (%s, %s, %s);", disModel.getTuple())
+            return "ok"
 
-    # def input_batch(self, id, json):
-    #     with psycopg.connect(conninfo=Postgres_URI) as conn:
-    #         cursor = conn.cursor()
-    #         cursor.execute("SELECT * FROM public.batch_unggas where id like %s;", (id,))
-    #         if cursor.fetchone():
-    #             return True
-    #         return False
+    def add_peternak(self, peternakModel):
+        with psycopg.connect(conninfo=Postgres_URI) as conn:
+            cursor = conn.cursor()
+            cursor.execute("select * from public.peternakan where id like %s;", (peternakModel.id,))
+            if cursor.fetchone():
+                return "already exists"
+            cursor.execute("INSERT INTO public.peternakan (nama, lokasi, id) VALUES (%s, %s, %s);", peternakModel.getTuple())
+            return "ok"
+
+    def input_batch(self, batchModel):
+        with psycopg.connect(conninfo=Postgres_URI) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM public.batch_unggas where id like %s;", (id,))
+            if cursor.fetchone():
+                return True
+            return False
 
 DbUtil = DBUtil()
-print(DbUtil.get_batch_by_id("000001"))
+# print(DbUtil.get_batch_by_id("000001"))
+# print(DbUtil.add_distributor("PT Abdul", "Jakarta", "JKT01"))

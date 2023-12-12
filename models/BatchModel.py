@@ -25,3 +25,24 @@ class BatchModel:
             "tanggalPotong": self.tanggalPotong,
             "tanggalKemas": self.tanggalKemas,
         }
+
+    def changeJenisTernak(self, data):
+        self.jenisTernak = data
+
+    def changePeternak(self, data):
+        self.peternak = data
+
+    def changeDistributor(self, data):
+        self.distributor = data
+
+    def changeBeratRata(self, data):
+        self.beratRata = data
+
+    def changeTanggalMulai(self, data):
+        self.tanggalMulai = data
+
+    def changeTanggalPotong(self, data):
+        self.tanggalPotong = data
+
+    def changeTanggalKemas(self, data):
+        self.tanggalKemas = data

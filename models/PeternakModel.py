@@ -13,3 +13,6 @@ class PeternakModel:
             "lokasi": self.lokasi,
             "id": self.id
         }
+
+    def getTuple(self):
+        return (self.nama, self.lokasi, self.id)
