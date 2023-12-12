@@ -74,6 +74,8 @@ class DBUtil:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM public.batch_unggas where id like %s;", (id,))
             dataBatch = cursor.fetchone()
+            if not dataBatch:
+                return "not found"
             cursor.execute("SELECT * FROM public.peternakan where id like %s;", (dataBatch[2],))
             dataPeternak = PeternakModel.PeternakModel(cursor.fetchone())
             cursor.execute("SELECT * FROM public.distributor where id like %s;", (dataBatch[3],))

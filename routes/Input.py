@@ -5,7 +5,6 @@ def inputBatch():
     data = request.get_json()
 
 
-
     return make_response({
         'status': 'ok',
         'data': data,
