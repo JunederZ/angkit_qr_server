@@ -80,7 +80,6 @@ class DBUtil:
             dataPeternak = PeternakModel.PeternakModel(cursor.fetchone())
             cursor.execute("SELECT * FROM public.distributor where id like %s;", (dataBatch[3],))
             dataDistributor = DistributorModel.DistributorModel(cursor.fetchone())
-
             if dataBatch:
                 disMode = BatchModel.BatchModel((
                     dataBatch[0],
@@ -106,5 +105,4 @@ class DBUtil:
     #         return False
 
 DbUtil = DBUtil()
-# print(DbUtil.user_login(password="asd", username="sad"))
 print(DbUtil.get_batch_by_id("000001"))
