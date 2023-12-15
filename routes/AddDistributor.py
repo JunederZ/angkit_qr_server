@@ -1,8 +1,10 @@
 from flask import request, make_response
 import models.DistributorModel as DistributorModel
 from database.db_util import DBUtil
+from flasgger import swag_from
 
 
+@swag_from('../docs/AddDistributor.yml')
 def addDistributor():
     datas = request.get_json()
 
@@ -25,7 +27,7 @@ def addDistributor():
         return make_response({
             'status': 'error',
             'message': responses,
-        }, 404)
+        }, 403)
 
     return make_response({
         'status': 'ok',

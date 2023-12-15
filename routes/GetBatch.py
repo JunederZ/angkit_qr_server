@@ -2,6 +2,8 @@ from flask import request, make_response
 from database.db_util import DBUtil
 from flasgger import swag_from
 
+
+@swag_from('../docs/GetBatch.yml')
 def getBatch():
     json = request.get_json()
     if not json.get("id"):

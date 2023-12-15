@@ -1,42 +1,11 @@
 from flask import request, make_response
 import models.PeternakModel as PeternakModel
 from database.db_util import DBUtil
+from flasgger import swag_from
 
 
+@swag_from('../docs/AddPeternakan.yml')
 def addPeternakan():
-    """
-    Add new peternakan to the database.
-    ---
-    tags:
-      - Peternakan
-    parameters:
-      - name: Body
-        type: json
-        in: body
-        required: true
-        schema:
-          $ref: '#/definitions/example'
-
-    definitions:
-      example:
-        type: string
-        properties:
-          nama:
-            type: string
-            example: PT ABC
-          lokasi:
-            type: string
-            example: Jakarta
-          id:
-            type: string
-            example: JKT0001
-
-    responses:
-      201:
-        description: Success add new peternakan to database
-      400:
-        description: missing Parameter
-    """
     datas = request.get_json()
 
     try:
@@ -51,7 +20,7 @@ def addPeternakan():
         return make_response({
             'status': 'error',
             'message': f"can't find data [{e}]",
-        }, 404)
+        }, 403)
 
     responses = DBUtil().add_peternak(peternakModel)
     if responses != "ok":
