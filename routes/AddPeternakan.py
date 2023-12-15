@@ -18,14 +18,14 @@ def addPeternakan():
         return make_response({
             'status': 'error',
             'message': f"can't find data [{e}]",
-        }, 200)
+        }, 404)
 
     responses = DBUtil().add_peternak(peternakModel)
     if responses != "ok":
         return make_response({
             'status': 'error',
             'message': responses,
-        }, 200)
+        }, 404)
 
     return make_response({
         'status': 'ok',

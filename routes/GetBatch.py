@@ -9,13 +9,13 @@ def getBatch():
         return make_response({
                 'status': 'error',
                 'message': "Please provide a valid ID"
-            }, 200)
+            }, 400)
     data = DBUtil().get_batch_by_id(json['id'])
     if data == "not found":
         return make_response({
             'status': 'error',
             'message': "Please provide a valid ID"
-        }, 200)
+        }, 404)
     return make_response({
         "status": "ok",
         'data': data.getData(),
