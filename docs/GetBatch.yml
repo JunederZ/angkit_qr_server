@@ -16,8 +16,35 @@ definitions:
       id:
         type: string
         example: BBK001
+  responseGetBatch:
+    type: string
+
+
 responses:
   201:
     description: Success
+    schema:
+      id: respons
+      properties:
+        data:
+          type: string
+          example:
+            beratRata: 9.2
+            distributor:
+              id: DTB001
+              lokasi: Bogor
+              nama: PT Ahmad
+            id: "000001"
+            jenisTernak: bebek
+            peternak:
+              id: PTK001
+              lokasi: Bogor
+              nama: PT Sangkurian
+            tanggalKemas: "2023-12-12"
+            tanggalMulai: "2023-12-01"
+            tanggalPotong: "2023-12-05"
+        status:
+          type: integer
+          example: 200
   404:
     description: Not Found
