@@ -1,0 +1,23 @@
+Retrieve a batch from database with ID.
+---
+tags:
+  - Batch
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/templateGetBatch'
+definitions:
+  templateGetBatch:
+    type: string
+    properties:
+      id:
+        type: string
+        example: BBK001
+responses:
+  201:
+    description: Success
+  404:
+    description: Not Found

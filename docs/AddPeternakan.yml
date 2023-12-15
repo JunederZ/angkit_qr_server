@@ -1,0 +1,31 @@
+Add new peternakan to the database.
+---
+tags:
+  - Peternakan
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/templatePeternakan'
+definitions:
+  templatePeternakan:
+    type: string
+    properties:
+      nama:
+        type: string
+        example: PT ABC Peternakan
+      lokasi:
+        type: string
+        example: Jakarta
+      id:
+        type: string
+        example: JKT0001
+responses:
+  201:
+    description: Success add new peternakan to database
+  400:
+    description: missing Parameter
+  403:
+    description: already exists
