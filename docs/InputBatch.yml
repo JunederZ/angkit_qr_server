@@ -15,7 +15,7 @@ definitions:
     properties:
       id:
         type: string
-        example: PT ABC Distributor
+        example: "000001"
       jenisTernak:
         type: string
         example: Jakarta

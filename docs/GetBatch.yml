@@ -16,15 +16,12 @@ definitions:
       id:
         type: string
         example: BBK001
-  responseGetBatch:
-    type: string
-
 
 responses:
   201:
     description: Success
     schema:
-      id: respons
+      id: responseGetBatch
       properties:
         data:
           type: string
