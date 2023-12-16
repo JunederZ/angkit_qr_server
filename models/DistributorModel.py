@@ -15,4 +15,4 @@ class DistributorModel:
         }
 
     def getTuple(self):
-        return (self.nama, self.lokasi, self.id)
+        return self.nama, self.lokasi, self.id
