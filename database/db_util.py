@@ -22,7 +22,7 @@ class DBUtil:
             return "User not exists"
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()
-            cursor.execute("select password from public.users where username like %s;", (username,))
+            cursor.execute("SELECT password FROM public.users WHERE username LIKE %s;", (username,))
 
             try:
                 PasswordHasher().verify(password=password, hash=cursor.fetchone()[0])
