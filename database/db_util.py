@@ -93,6 +93,31 @@ class DBUtil:
                 )
                 return batchModel
             return None
+    def get_batch_by_peternak(self, id_peternak):
+        with psycopg.connect(conninfo=Postgres_URI) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM public.batch_unggas where peternak like %s;", (id,))
+            dataBatch = cursor.fetchone()
+            if not dataBatch:
+                return "not found"
+            cursor.execute("SELECT * FROM public.peternakan where peternak like %s;", (dataBatch[2],))
+            dataPeternak = PeternakModel.PeternakModel(cursor.fetchone())
+            cursor.execute("SELECT * FROM public.distributor where peternak like %s;", (dataBatch[3],))
+            dataDistributor = DistributorModel.DistributorModel(cursor.fetchone())
+            if dataBatch:
+                batchModel = BatchModel.BatchModel((
+                    dataBatch[0],
+                    dataBatch[1],
+                    dataPeternak,
+                    dataDistributor,
+                    dataBatch[4],
+                    dataBatch[5],
+                    dataBatch[6],
+                    dataBatch[7],
+                )
+                )
+                return batchModel
+            return None
 
     def add_distributor(self, disModel):
         with psycopg.connect(conninfo=Postgres_URI) as conn:
