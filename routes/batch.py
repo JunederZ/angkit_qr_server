@@ -1,6 +1,7 @@
 from flask import request, make_response
 from database.models import *
 from flasgger import swag_from
+import uuid
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 
@@ -64,6 +65,22 @@ def get_batch_by_farm():
         "status": "ok",
         'batches': batches,
     }, 200)
+
+def add_distributor():
+    json = request.get_json()
+    try:
+        dist = dict_to_model(Distributor, {
+            "id": uuid.uuid4().hex,
+            "username": json.get("username"),
+            "nama": json.get("nama"),
+            "lokasi": json.get("lokasi"),
+        })
+        dist.save()
+    except KeyError as e:
+        return make_response({
+            'status': 'error',
+            'message': f"Required field `{e}` is not present",
+        }, 403)
 
 
 

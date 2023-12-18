@@ -74,3 +74,7 @@ class BatchUnggas(BaseModel):
 
     class Meta:
         table_name = 'batch_unggas'
+
+
+if __name__ == '__main__':
+    db.create_tables([Users, Distributor, Peternakan, BatchUnggas])
