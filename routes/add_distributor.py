@@ -5,7 +5,7 @@ from flasgger import swag_from
 
 
 @swag_from('../docs/AddDistributor.yml')
-def addDistributor():
+def add_distributor():
     datas = request.get_json()
 
     try:

@@ -12,9 +12,12 @@ def login():
     password = json.get('password')
 
     user = DBUtil().user_login(username, password)
-    if user == 'success':
+    if user != 'User not exists' or user != 'wrong password':
+        print(user)
         return make_response({
-            'status': user,
+            'status': 'ok',
+            'username': user[0],
+            'role': user[2],
         }, 200)
     return make_response({
         'status': user,

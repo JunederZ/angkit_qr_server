@@ -22,11 +22,12 @@ class DBUtil:
             return "User not exists"
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT password FROM public.users WHERE username LIKE %s;", (username,))
+            cursor.execute("SELECT * FROM public.users WHERE username LIKE %s;", (username,))
 
             try:
-                PasswordHasher().verify(password=password, hash=cursor.fetchone()[0])
-                return 'ok'
+                user = cursor.fetchone()
+                PasswordHasher().verify(password=password, hash=user[1])
+                return user
             except argon2.exceptions.VerifyMismatchError:
                 return 'wrong password'
 
@@ -60,7 +61,8 @@ class DBUtil:
             cursor.execute("UPDATE public.users SET password = %s WHERE username LIKE %s;", (hashed_pass, usernameIn))
             conn.db.commit()
 
-    def check_user_exists(self, usernameIn):
+    @staticmethod
+    def check_user_exists(usernameIn):
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()
             cursor.execute("select * from public.users where username like %s;", (usernameIn,))
@@ -68,7 +70,8 @@ class DBUtil:
                 return True
             return False
 
-    def get_batch_by_id(self, id):
+    @staticmethod
+    def get_batch_by_id(id):
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM public.batch_unggas where id like %s;", (id,))
@@ -93,6 +96,7 @@ class DBUtil:
                 )
                 return batchModel
             return None
+
     def get_batch_by_peternak(self, id_peternak):
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()

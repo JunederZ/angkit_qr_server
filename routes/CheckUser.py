@@ -4,14 +4,14 @@ from flasgger import swag_from
 
 
 @swag_from('../docs/CheckUser.yml')
-def checkUser():
+def check_user():
     json = request.get_json()
     if not json.get("username"):
         return make_response({
             'status': 'error',
             'message': "Please provide the username"
         }, 400)
-    data = DBUtil().check_user_exists(json['username'])
+    data = DBUtil.check_user_exists(json['username'])
     if data:
         return make_response({
             'status': 'error',
