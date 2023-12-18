@@ -71,9 +71,9 @@ def add_dist():
     try:
         dist = dict_to_model(Distributor, {
             "id": uuid.uuid4().hex,
-            "username": json.get("username"),
-            "nama": json.get("nama"),
-            "lokasi": json.get("lokasi"),
+            "username": json["username"],
+            "nama": json["nama"],
+            "lokasi": json["lokasi"],
         })
         dist.save()
     except KeyError as e:
@@ -81,6 +81,10 @@ def add_dist():
             'status': 'error',
             'message': f"Required field `{e}` is not present",
         }, 403)
+
+    return make_response({
+        'status': 'ok'
+    }, 201)
 
 
 
