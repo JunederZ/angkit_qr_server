@@ -5,7 +5,7 @@ import os
 load_dotenv()
 db = PostgresqlDatabase(
     database=os.getenv('DATABASE'),
-    user=os.getenv('USER'),
+    user=os.getenv('USERNAME'),
     host=os.getenv('HOST'),
     port=os.getenv('PORT'),
     password=os.getenv('PASSWORD')
