@@ -66,7 +66,7 @@ def get_batch_by_farm():
         'batches': batches,
     }, 200)
 
-def add_distributor():
+def add_dist():
     json = request.get_json()
     try:
         dist = dict_to_model(Distributor, {

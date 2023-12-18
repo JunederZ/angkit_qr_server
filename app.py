@@ -27,6 +27,7 @@ swagger_config = {
 swagger = Swagger(app, config=swagger_config)
 app.add_url_rule('/checkUser', view_func=routes.check_user, methods=['POST'])
 app.add_url_rule('/register', view_func=routes.register, methods=['POST'])
+app.add_url_rule('/dist_data', view_func=routes.add_dist, methods=['POST'])
 app.add_url_rule('/login', view_func=routes.login, methods=['POST'])
 app.add_url_rule('/getBatch', view_func=routes.getBatch, methods=['POST'])
 app.add_url_rule('/inputBatch', view_func=routes.inputBatch, methods=['POST'])
