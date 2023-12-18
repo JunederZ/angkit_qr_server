@@ -1,5 +1,5 @@
 from flask import request, make_response
-import models.PeternakModel as PeternakModel
+import models.peternak_model as PeternakModel
 from database.db_util import DBUtil
 from flasgger import swag_from
 

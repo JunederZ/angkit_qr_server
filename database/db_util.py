@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 from argon2 import PasswordHasher
 import argon2
 
-from models import BatchModel
-from models import DistributorModel
-from models import PeternakModel
+from models.distributor_model import DistributorModel
+from models.batch_model import BatchModel
+from models.peternak_model import PeternakModel
 
 load_dotenv()
 Postgres_URI = os.getenv('POSTGRES_URI')
@@ -79,11 +79,11 @@ class DBUtil:
             if not dataBatch:
                 return "not found"
             cursor.execute("SELECT * FROM public.peternakan where id like %s;", (dataBatch[2],))
-            dataPeternak = PeternakModel.PeternakModel(cursor.fetchone())
+            dataPeternak = PeternakModel(cursor.fetchone())
             cursor.execute("SELECT * FROM public.distributor where id like %s;", (dataBatch[3],))
-            dataDistributor = DistributorModel.DistributorModel(cursor.fetchone())
+            dataDistributor = DistributorModel(cursor.fetchone())
             if dataBatch:
-                batchModel = BatchModel.BatchModel((
+                batchModel = BatchModel((
                     dataBatch[0],
                     dataBatch[1],
                     dataPeternak,
@@ -104,12 +104,12 @@ class DBUtil:
             dataBatch = cursor.fetchone()
             if not dataBatch:
                 return "not found"
-            cursor.execute("SELECT * FROM public.peternakan where peternak like %s;", (dataBatch[2],))
-            dataPeternak = PeternakModel.PeternakModel(cursor.fetchone())
-            cursor.execute("SELECT * FROM public.distributor where peternak like %s;", (dataBatch[3],))
-            dataDistributor = DistributorModel.DistributorModel(cursor.fetchone())
+            cursor.execute("SELECT * FROM public.peternakan where id like %s;", (dataBatch[2],))
+            dataPeternak = PeternakModel(cursor.fetchone())
+            cursor.execute("SELECT * FROM public.distributor where id like %s;", (dataBatch[3],))
+            dataDistributor = DistributorModel(cursor.fetchone())
             if dataBatch:
-                batchModel = BatchModel.BatchModel((
+                batchModel = BatchModel((
                     dataBatch[0],
                     dataBatch[1],
                     dataPeternak,

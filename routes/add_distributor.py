@@ -1,5 +1,5 @@
 from flask import request, make_response
-import models.DistributorModel as DistributorModel
+import models.distributor_model as DistributorModel
 from database.db_util import DBUtil
 from flasgger import swag_from
 

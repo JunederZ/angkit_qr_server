@@ -1,50 +1,76 @@
 from peewee import *
-from playhouse.shortcuts import model_to_dict, dict_to_model
+from dotenv import load_dotenv
+import os
 
-db = PostgresqlDatabase('angkit_hci', user='ktsabit', host='localhost', port=5432)
+load_dotenv()
+db = PostgresqlDatabase(
+    database=os.getenv('DATABASE'),
+    user=os.getenv('USER'),
+    host=os.getenv('HOST'),
+    port=os.getenv('PORT'),
+    password=os.getenv('PASSWORD')
+)
 
 
-class User(Model):
-    username = CharField(primary_key=True)
+class UnknownField(object):
+    def __init__(self, *_, **__): pass
+
+
+class ISODateField(DateField):
+    field_type = 'date'
+
+    def db_value(self, value):
+        return value
+
+    def python_value(self, value):
+        return value.isoformat()
+
+
+
+class BaseModel(Model):
+    class Meta:
+        database = db
+
+
+class Users(BaseModel):
     password = CharField()
-    role = CharField()
+    role = CharField(null=True)
+    username = CharField(primary_key=True)
 
     class Meta:
-        database = db
+        table_name = 'users'
 
 
-class Farms(Model):
+class Distributor(BaseModel):
     id = CharField(primary_key=True)
-    name = CharField()
-    location = CharField()
-    user = ForeignKeyField(User, to_field='username')
+    lokasi = CharField()
+    nama = CharField()
+    user = ForeignKeyField(column_name='username', field='username', model=Users)
 
     class Meta:
-        database = db
+        table_name = 'distributor'
 
 
-class Distrbs(Model):
+class Peternakan(BaseModel):
     id = CharField(primary_key=True)
-    name = CharField()
-    location = CharField()
-    user = ForeignKeyField(User, to_field='username')
+    lokasi = CharField()
+    nama = CharField()
+    user = ForeignKeyField(column_name='username', field='username', model=Users)
 
     class Meta:
-        database = db
+        table_name = 'peternakan'
 
 
-class Batch(Model):
+class BatchUnggas(BaseModel):
+    berat_rt_sample = DoubleField(null=True)
+    distributor = ForeignKeyField(Distributor, column_name='distributor')
+    # distributor = ForeignKeyField(column_name='distributor', field='id', model=Distributor, null=True)
     id = CharField(primary_key=True)
-    type = CharField()
-    farm = ForeignKeyField(Farms)
-    distributor = ForeignKeyField(Distrbs)
-    avg_weight = DoubleField()
-    start_date = DateField()
-    end_date = DateField()
-    packaging_date = DateField()
+    jenis_ternak = CharField()
+    peternak = ForeignKeyField(Peternakan, column_name='peternak')
+    tgl_kemas = ISODateField(null=True)
+    tgl_mulai = ISODateField()
+    tgl_potong = ISODateField(null=True)
 
     class Meta:
-        database = db
-
-
-db.connect()
+        table_name = 'batch_unggas'

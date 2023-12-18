@@ -32,6 +32,9 @@ app.add_url_rule('/getBatch', view_func=routes.getBatch, methods=['POST'])
 app.add_url_rule('/inputBatch', view_func=routes.inputBatch, methods=['POST'])
 app.add_url_rule('/addPeternakan', view_func=routes.addPeternakan, methods=['POST'])
 app.add_url_rule('/addDistributor', view_func=routes.add_distributor, methods=['POST'])
+app.add_url_rule('/get_all_batches', view_func=routes.get_all_batch, methods=['GET'])
+app.add_url_rule('/get_batches_by_farm', view_func=routes.get_batch_by_farm, methods=['POST'])
+app.add_url_rule('/get_batches_by_dist', view_func=routes.get_batch_by_distributor, methods=['POST'])
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True, host="0.0.0.0", port=5001)
