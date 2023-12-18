@@ -1,5 +1,5 @@
 from flask import request, make_response
-import models.BatchModel as BatchModel
+import models.batch_model as BatchModel
 from database.db_util import DBUtil
 from flasgger import swag_from
 
