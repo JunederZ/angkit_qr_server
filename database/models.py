@@ -77,4 +77,5 @@ class BatchUnggas(BaseModel):
 
 
 if __name__ == '__main__':
+    db.connect()
     db.create_tables([Users, Distributor, Peternakan, BatchUnggas])
