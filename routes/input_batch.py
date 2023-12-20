@@ -1,39 +1,49 @@
 from flask import request, make_response
-import models.batch_model as BatchModel
-from database.db_util import DBUtil
 from flasgger import swag_from
-
+from playhouse.shortcuts import model_to_dict
+import random
+import string
+from database.models import *
+from peewee import *
 
 @swag_from('../docs/InputBatch.yml')
 def inputBatch():
     datas = request.get_json()
-
     try:
-        batchModel = BatchModel.BatchModel(
-            (
-                datas['id'],
-                datas['jenisTernak'],
-                datas['peternak'],
-                datas['distributor'],
-                datas['beratRata'],
-                datas['tanggalMulai'],
-                datas['tanggalPotong'],
-                datas['tanggalKemas'],
-            )
+        while True:
+            idBatch = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6)),
+            if BatchUnggas.select().where(BatchUnggas.id == idBatch).exists():
+                continue
+            break
+        data = BatchUnggas.create(
+            id=idBatch,
+            berat_rt_sample=datas['beratRata'],
+            distributor=datas['distributor'],
+            jenis_ternak=datas['jenisTernak'],
+            peternak=datas['peternak'],
+            tgl_kemas=datas['tanggalKemas'],
+            tgl_mulai=datas['tanggalMulai'],
+            tgl_potong=datas['tanggalPotong']
         )
+        data.save()
     except KeyError as e:
         return make_response({
             'status': 'error',
-            'message': f"can't find data [{e}]",
+            'message': f"Missing field [{e}]",
         }, 400)
-
-    responses = DBUtil().input_batch(batchModel)
-    if responses != "ok":
-        return make_response({
-            'status': 'error',
-            'message': responses,
-        }, 403)
+    except IntegrityError as e:
+        if "violates foreign key" in f"{e}":
+            return make_response({
+                'status': 'error',
+                'message': f"{e}]",
+            }, 404)
+        else:
+            return make_response({
+                'status': 'error',
+                'message': f"{e}.",
+            }, 400)
 
     return make_response({
         'status': 'ok',
-    }, 200)
+        'data': model_to_dict(data, exclude=[Peternakan.user, Distributor.user])
+    }, 201)

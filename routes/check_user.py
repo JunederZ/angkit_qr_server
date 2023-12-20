@@ -1,7 +1,6 @@
 from flask import request, make_response
-from database.db_util import DBUtil
 from flasgger import swag_from
-
+from database.models import *
 
 @swag_from('../docs/CheckUser.yml')
 def check_user():
@@ -10,13 +9,13 @@ def check_user():
         return make_response({
             'status': 'error',
             'message': "Please provide the username"
-        }, 400)
-    data = DBUtil.check_user_exists(json['username'])
-    if data:
+        }, 403)
+    data = Users.select().where(Users.username == json.get('username'))
+    if data.exists():
         return make_response({
             'status': 'error',
             'available': "Username already exists"
-        }, 404)
+        }, 409)
     return make_response({
         "status": "ok",
         'data': "Username available"

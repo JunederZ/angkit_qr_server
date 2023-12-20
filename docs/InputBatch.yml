@@ -13,12 +13,9 @@ definitions:
   templateInputBatch:
     type: string
     properties:
-      id:
-        type: string
-        example: "000001"
       jenisTernak:
         type: string
-        example: Jakarta
+        example: Bebek
       peternak:
         type: string
         example: FOREIGN KEY PETERNAKAN
@@ -42,6 +39,4 @@ responses:
   201:
     description: Success add new batch to database
   400:
-    description: missing Parameter
-  403:
-    description: already exists
+    description: missing field

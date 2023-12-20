@@ -19,13 +19,15 @@ definitions:
       lokasi:
         type: string
         example: Jakarta
-      id:
+      username:
         type: string
-        example: JKT0001
+        example: Kaisan
 responses:
   201:
     description: Success add new distributor to database
   400:
-    description: missing Parameter
-  403:
+    description: missing field
+  404:
+    description: username doesn't exists
+  409:
     description: already exists

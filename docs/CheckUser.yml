@@ -31,7 +31,7 @@ responses:
           example: ok
 
   404:
-    description: Username exist
+    description: Username exists
 #    schema:
 #      id: responseCheckUser
 #      properties:

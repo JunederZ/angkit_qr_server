@@ -58,7 +58,6 @@ class Peternakan(BaseModel):
 class BatchUnggas(BaseModel):
     berat_rt_sample = DoubleField(null=True)
     distributor = ForeignKeyField(Distributor, column_name='distributor')
-    # distributor = ForeignKeyField(column_name='distributor', field='id', model=Distributor, null=True)
     id = CharField(primary_key=True)
     jenis_ternak = CharField()
     peternak = ForeignKeyField(Peternakan, column_name='peternak', backref='batches')

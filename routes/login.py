@@ -1,12 +1,7 @@
 from flask import request, make_response
 from database.db_util import DBUtil
 
-
 def login():
-    # data = request.get_data()
-    # data_bytes = base64.b64decode(data)
-    # decrypted_json = json.loads(cryptUtil.decode(data_bytes))
-
     json = request.get_json()
     username = json.get('username')
     password = json.get('password')
