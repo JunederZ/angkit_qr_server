@@ -133,10 +133,11 @@ def add_image():
     except IntegrityError as e:
         return make_response({
             "status": "error",
-            "msg": model_to_dict(batch_image, exclude=[BatchImages.batch_id])
+            "msg": str(e)
         }, 400)
 
     return make_response({
-        "status": "ok"
+        "status": "ok",
+        "data": model_to_dict(batch_image, recurse=False)
     }, 201)
 
