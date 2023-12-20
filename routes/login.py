@@ -7,7 +7,7 @@ def login():
     password = json.get('password')
 
     user = DBUtil().user_login(username, password)
-    if user != 'User not exists' or user != 'wrong password':
+    if user != 'User not exists' and user != 'wrong password':
         print(user)
         return make_response({
             'status': 'ok',
