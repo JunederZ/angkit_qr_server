@@ -1,6 +1,7 @@
 from flask import request, make_response
 from flasgger import swag_from
 from database.models import *
+from argon2 import PasswordHasher
 
 
 @swag_from('../docs/Register.yml')
@@ -14,9 +15,11 @@ def register():
                 'message': 'user already exists',
             }, 409)
 
+        ph = PasswordHasher()
+
         data = Users.create(
             username=datas['username'],
-            password=datas['password'],
+            password=ph.hash(datas['password']),
             role=datas['role']
         )
         data.save()
