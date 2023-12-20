@@ -1,15 +1,10 @@
 from peewee import *
 from dotenv import load_dotenv
+from playhouse.db_url import connect
 import os
 
 load_dotenv()
-db = PostgresqlDatabase(
-    database=os.getenv('DATABASE'),
-    user=os.getenv('USERNAME'),
-    host=os.getenv('HOST'),
-    port=os.getenv('PORT'),
-    password=os.getenv('PASSWORD')
-)
+db = connect(os.getenv("POSTGRES_URI"))
 
 
 class UnknownField(object):
@@ -24,7 +19,6 @@ class ISODateField(DateField):
 
     def python_value(self, value):
         return value.isoformat()
-
 
 
 class BaseModel(Model):
@@ -45,7 +39,7 @@ class Distributor(BaseModel):
     id = CharField(primary_key=True)
     lokasi = CharField()
     nama = CharField()
-    user = ForeignKeyField(column_name='username', field='username', model=Users)
+    user = ForeignKeyField(column_name='username', field='username', model=Users, backref='distributors')
 
     class Meta:
         table_name = 'distributor'
@@ -55,7 +49,7 @@ class Peternakan(BaseModel):
     id = CharField(primary_key=True)
     lokasi = CharField()
     nama = CharField()
-    user = ForeignKeyField(column_name='username', field='username', model=Users)
+    user = ForeignKeyField(column_name='username', field='username', model=Users, backref='peternakan')
 
     class Meta:
         table_name = 'peternakan'
@@ -67,7 +61,7 @@ class BatchUnggas(BaseModel):
     # distributor = ForeignKeyField(column_name='distributor', field='id', model=Distributor, null=True)
     id = CharField(primary_key=True)
     jenis_ternak = CharField()
-    peternak = ForeignKeyField(Peternakan, column_name='peternak')
+    peternak = ForeignKeyField(Peternakan, column_name='peternak', backref='batches')
     tgl_kemas = ISODateField(null=True)
     tgl_mulai = ISODateField()
     tgl_potong = ISODateField(null=True)
@@ -78,12 +72,11 @@ class BatchUnggas(BaseModel):
 
 class BatchImages(BaseModel):
     id = AutoField(primary_key=True)
-    batch_id = ForeignKeyField(BatchUnggas, to_field='id', column_name='batch_id')
+    batch_id = ForeignKeyField(BatchUnggas, to_field='id', column_name='batch_id', backref='images')
     filename = CharField()
 
     class Meta:
         table_name = 'batch_images'
-
 
 
 if __name__ == '__main__':

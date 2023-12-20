@@ -6,11 +6,11 @@ import uuid
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
 
-# @swag_from('../docs/GetBatch.yml')
+@swag_from('../docs/GetAllBatch.yml')
 def get_all_batch():
     try:
         batches = BatchUnggas.select()
-        batches = [model_to_dict(batch, exclude=[Distributor.user, Peternakan.user]) for batch in batches]
+        batches = [model_to_dict(batch, exclude=[Distributor.user, Peternakan.user, BatchImages.id], backrefs=True) for batch in batches]
     except DoesNotExist:
         return make_response({
             "status": "error",
@@ -107,7 +107,7 @@ def add_image():
     batch_id = request.form.get('batch_id')
     if not batch_id:
         return make_response({
-            "status": "batch_id not supplied in json"
+            "status": "no batch_id provided"
         }, 400)
     if 'file' not in request.files:
         return make_response({
@@ -127,9 +127,9 @@ def add_image():
     filename = uuid.uuid4().hex + '.' + file.filename.rsplit('.', 1)[1].lower()
     file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
     batch_image = BatchImages(filename=filename, batch_id=batch_id)
-    print(batch_image)
     try:
         batch_image.save()
+
     except IntegrityError as e:
         return make_response({
             "status": "error",
@@ -138,6 +138,6 @@ def add_image():
 
     return make_response({
         "status": "ok",
-        "data": model_to_dict(batch_image, recurse=False)
+        "data": model_to_dict(batch_image, recurse=False, )
     }, 201)
 
