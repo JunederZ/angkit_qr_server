@@ -10,11 +10,11 @@ from peewee import *
 def inputBatch():
     datas = request.get_json()
     try:
+        existing_ids = set(BatchUnggas.select(BatchUnggas.id).tuples())
         while True:
-            idBatch = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6)),
-            if BatchUnggas.select().where(BatchUnggas.id == idBatch).exists():
-                continue
-            break
+            idBatch = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6))
+            if idBatch not in existing_ids:
+                break
         data = BatchUnggas.create(
             id=idBatch,
             berat_rt_sample=datas['beratRata'],
