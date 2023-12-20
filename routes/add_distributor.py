@@ -23,7 +23,7 @@ def add_distributor():
         if "violates foreign key" in f"{e}":
             return make_response({
                 'status': 'error',
-                'message': f"not found foreign key {datas['username']}.",
+                'message': f"username {datas['username']} doesn't exist",
             }, 404)
         else:
             return make_response({
@@ -33,7 +33,7 @@ def add_distributor():
     except KeyError as e:
         return make_response({
             'status': 'error',
-            'message': f"can't find data [{e}].",
+            'message': f"Missing field [{e}].",
         }, 400)
 
     return make_response({

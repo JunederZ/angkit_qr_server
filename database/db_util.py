@@ -4,10 +4,6 @@ from dotenv import load_dotenv
 from argon2 import PasswordHasher
 import argon2
 
-from models.distributor_model import DistributorModel
-from models.batch_model import BatchModel
-from models.peternak_model import PeternakModel
-
 load_dotenv()
 Postgres_URI = os.getenv('POSTGRES_URI')
 
@@ -70,90 +66,5 @@ class DBUtil:
                 return True
             return False
 
-    @staticmethod
-    def get_batch_by_id(id):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM public.batch_unggas where id like %s;", (id,))
-            dataBatch = cursor.fetchone()
-            if not dataBatch:
-                return "not found"
-            cursor.execute("SELECT * FROM public.peternakan where id like %s;", (dataBatch[2],))
-            dataPeternak = PeternakModel(cursor.fetchone())
-            cursor.execute("SELECT * FROM public.distributor where id like %s;", (dataBatch[3],))
-            dataDistributor = DistributorModel(cursor.fetchone())
-            if dataBatch:
-                batchModel = BatchModel((
-                    dataBatch[0],
-                    dataBatch[1],
-                    dataPeternak,
-                    dataDistributor,
-                    dataBatch[4],
-                    dataBatch[5],
-                    dataBatch[6],
-                    dataBatch[7],
-                )
-                )
-                return batchModel
-            return None
-
-    def get_batch_by_peternak(self, id_peternak):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM public.batch_unggas where peternak like %s;", (id,))
-            dataBatch = cursor.fetchone()
-            if not dataBatch:
-                return "not found"
-            cursor.execute("SELECT * FROM public.peternakan where id like %s;", (dataBatch[2],))
-            dataPeternak = PeternakModel(cursor.fetchone())
-            cursor.execute("SELECT * FROM public.distributor where id like %s;", (dataBatch[3],))
-            dataDistributor = DistributorModel(cursor.fetchone())
-            if dataBatch:
-                batchModel = BatchModel((
-                    dataBatch[0],
-                    dataBatch[1],
-                    dataPeternak,
-                    dataDistributor,
-                    dataBatch[4],
-                    dataBatch[5],
-                    dataBatch[6],
-                    dataBatch[7],
-                )
-                )
-                return batchModel
-            return None
-
-    def add_distributor(self, disModel):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("select * from public.distributor where id like %s;", (disModel.id,))
-            if cursor.fetchone():
-                return "already exists"
-            cursor.execute("INSERT INTO public.distributor (nama, lokasi, id) VALUES (%s, %s, %s);",
-                           disModel.getTuple())
-            return "ok"
-
-    def add_peternak(self, peternakModel):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("select * from public.peternakan where id like %s;", (peternakModel.id,))
-            if cursor.fetchone():
-                return "already exists"
-            cursor.execute("INSERT INTO public.peternakan (nama, lokasi, id) VALUES (%s, %s, %s);",
-                           peternakModel.getTuple())
-            return "ok"
-
-    def input_batch(self, batchModel):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("select * from public.batch_unggas where id like %s;", (batchModel.id,))
-            if cursor.fetchone():
-                return "already exists"
-            cursor.execute("INSERT INTO public.batch_unggas (id, jenis_ternak, peternak, distributor, berat_rt_sample, tgl_mulai, tgl_potong, tgl_kemas) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);",
-                           batchModel.getTuple())
-            return "ok"
-
 
 DbUtil = DBUtil()
-# print(DbUtil.get_batch_by_id("000001"))
-# print(DbUtil.add_distributor("PT Abdul", "Jakarta", "JKT01"))

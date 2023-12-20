@@ -67,35 +67,6 @@ def get_batch_by_farm():
         'batches': batches,
     }, 200)
 
-
-def add_dist():
-    json = request.get_json()
-    try:
-        dist = Distributor(
-            id=uuid.uuid4().hex,
-            nama=json['nama'],
-            lokasi=json['lokasi'],
-            user=json['username']
-        )
-        try:
-            dist.save(force_insert=True)
-        except IntegrityError as e:
-            return make_response({
-                'status': 'error',
-                'message': f"usrname {json['username']} doesn't exist",
-            }, 404)
-
-    except KeyError as e:
-        return make_response({
-            'status': 'error',
-            'message': f"Required field `{e}` is not present",
-        }, 403)
-
-    return make_response({
-        'status': 'ok'
-    }, 201)
-
-
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 

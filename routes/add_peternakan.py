@@ -11,19 +11,18 @@ def add_peternakan():
     datas = request.get_json()
     data = None
     try:
-        if datas['lokasi'] and datas['nama'] and datas['username']:
-            data = Peternakan.create(
-                nama=datas['nama'],
-                lokasi=datas['lokasi'],
-                id=uuid.uuid4().hex,
-                username=datas['username'],
-            )
-            data.save()
+        data = Peternakan.create(
+            nama=datas['nama'],
+            lokasi=datas['lokasi'],
+            id=uuid.uuid4().hex,
+            username=datas['username'],
+        )
+        data.save()
     except IntegrityError as e:
         if "violates foreign key" in f"{e}":
             return make_response({
                 'status': 'error',
-                'message': f"foreign key [{datas['username']}] not found.",
+                'message': f"username {datas['username']} doesn't exist",
             }, 404)
         else:
             return make_response({
@@ -33,7 +32,7 @@ def add_peternakan():
     except KeyError as e:
         return make_response({
             'status': 'error',
-            'message': f"can't find data [{e}].",
+            'message': f"Missing field [{e}].",
         }, 400)
 
     return make_response({

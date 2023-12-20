@@ -23,8 +23,8 @@ responses:
   201:
     description: Success add new distributor to database
   400:
-    description: missing Parameter
+    description: missing field
   404:
-    description: foreign key not found
+    description: username doesn't exists
   409:
     description: already exists
