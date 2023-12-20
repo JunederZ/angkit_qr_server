@@ -19,6 +19,9 @@ definitions:
       lokasi:
         type: string
         example: Jakarta
+      username:
+        type: string
+        example: Kaisan
 responses:
   201:
     description: Success add new distributor to database
