@@ -1,0 +1,43 @@
+Check whether a username is registered in system
+---
+tags:
+  - User
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/templateCheckUser'
+definitions:
+  templateCheckUser:
+    type: string
+    properties:
+      username:
+        type: string
+        example: ktsabit
+
+responses:
+  200:
+    description: Username is available
+    schema:
+      id: responseCheckUser
+      properties:
+        data:
+          type: string
+          example: Username is available
+        status:
+          type: string
+          example: ok
+
+  404:
+    description: Username exists
+#    schema:
+#      id: responseCheckUser
+#      properties:
+#        data:
+#          type: string
+#          example: Username is available
+#        status:
+#          type: string
+#          example: ok

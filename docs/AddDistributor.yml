@@ -1,0 +1,33 @@
+Add new distributor to the database.
+---
+tags:
+  - Distributor
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/templateDistributor'
+definitions:
+  templateDistributor:
+    type: string
+    properties:
+      nama:
+        type: string
+        example: PT ABC Distributor
+      lokasi:
+        type: string
+        example: Jakarta
+      username:
+        type: string
+        example: Kaisan
+responses:
+  201:
+    description: Success add new distributor to database
+  400:
+    description: missing field
+  404:
+    description: username doesn't exists
+  409:
+    description: already exists

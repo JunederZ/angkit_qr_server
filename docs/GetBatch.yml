@@ -1,0 +1,47 @@
+Retrieve a batch from database with ID.
+---
+tags:
+  - Batch
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/templateGetBatch'
+definitions:
+  templateGetBatch:
+    type: string
+    properties:
+      id:
+        type: string
+        example: BBK001
+
+responses:
+  201:
+    description: Success
+    schema:
+      id: responseGetBatch
+      properties:
+        data:
+          type: string
+          example:
+            beratRata: 9.2
+            distributor:
+              id: DTB001
+              lokasi: Bogor
+              nama: PT Ahmad
+            id: "000001"
+            jenisTernak: bebek
+            peternak:
+              id: PTK001
+              lokasi: Bogor
+              nama: PT Sangkurian
+            tanggalKemas: "2023-12-12"
+            tanggalMulai: "2023-12-01"
+            tanggalPotong: "2023-12-05"
+        status:
+          type: integer
+          example: 200
+  404:
+    description: Not Found

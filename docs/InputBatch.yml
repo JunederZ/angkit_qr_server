@@ -1,0 +1,42 @@
+Add new batch to the database.
+---
+tags:
+  - Batch
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/templateInputBatch'
+definitions:
+  templateInputBatch:
+    type: string
+    properties:
+      jenisTernak:
+        type: string
+        example: Bebek
+      peternak:
+        type: string
+        example: FOREIGN KEY PETERNAKAN
+      distributor:
+        type: string
+        example: FOREIGN KEY DISTRIBUTOR
+      beratRata:
+        type: integer
+        example: 9.2
+      tanggalMulai:
+        type: string
+        example: DATE IN ISO FORMAT
+      tanggalPotong:
+        type: string
+        example: DATE IN ISO FORMAT
+      tanggalKemas:
+        type: string
+        example: DATE IN ISO FORMAT
+
+responses:
+  201:
+    description: Success add new batch to database
+  400:
+    description: missing field

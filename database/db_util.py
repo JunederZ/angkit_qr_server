@@ -3,10 +3,6 @@ import psycopg
 from dotenv import load_dotenv
 from argon2 import PasswordHasher
 import argon2
-import json
-from models import BatchModel
-from models import DistributorModel
-from models import PeternakModel
 
 load_dotenv()
 Postgres_URI = os.getenv('POSTGRES_URI')
@@ -22,12 +18,13 @@ class DBUtil:
             return "User not exists"
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()
-            cursor.execute("select password from public.users where username like %s;", (username,))
+            cursor.execute("SELECT * FROM public.users WHERE username LIKE %s;", (username,))
 
             try:
-                PasswordHasher().verify(password=password, hash=cursor.fetchone()[0])
-                return 'ok'
-            except argon2.exceptions.VerifyMismatchError as e:
+                user = cursor.fetchone()
+                PasswordHasher().verify(password=password, hash=user[1])
+                return user
+            except argon2.exceptions.VerifyMismatchError:
                 return 'wrong password'
 
     def add_user(self, usernameIn, passwordIn, category):
@@ -38,7 +35,7 @@ class DBUtil:
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO public.users (username, password, role) VALUES(%s, %s, %s);",
-                       (usernameIn, hashed_pass, category))
+                           (usernameIn, hashed_pass, category))
             conn.commit()
         return "success"
 
@@ -61,66 +58,13 @@ class DBUtil:
             conn.db.commit()
 
     @staticmethod
-    def check_user_exists(usenameIn):
+    def check_user_exists(usernameIn):
         with psycopg.connect(conninfo=Postgres_URI) as conn:
             cursor = conn.cursor()
-            cursor.execute("select * from public.users where username like %s;", (usenameIn,))
+            cursor.execute("select * from public.users where username like %s;", (usernameIn,))
             if cursor.fetchone():
                 return True
             return False
 
-    def get_batch_by_id(self, id):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM public.batch_unggas where id like %s;", (id,))
-            dataBatch = cursor.fetchone()
-            if not dataBatch:
-                return "not found"
-            cursor.execute("SELECT * FROM public.peternakan where id like %s;", (dataBatch[2],))
-            dataPeternak = PeternakModel.PeternakModel(cursor.fetchone())
-            cursor.execute("SELECT * FROM public.distributor where id like %s;", (dataBatch[3],))
-            dataDistributor = DistributorModel.DistributorModel(cursor.fetchone())
-            if dataBatch:
-                batchModel = BatchModel.BatchModel((
-                    dataBatch[0],
-                    dataBatch[1],
-                    dataPeternak,
-                    dataDistributor,
-                    dataBatch[4],
-                    dataBatch[5],
-                    dataBatch[6],
-                    dataBatch[7],
-                    )
-                )
-                return batchModel
-            return None
-
-    def add_distributor(self, disModel):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("select * from public.distributor where id like %s;", (disModel.id,))
-            if cursor.fetchone():
-                return "already exists"
-            cursor.execute("INSERT INTO public.distributor (nama, lokasi, id) VALUES (%s, %s, %s);", disModel.getTuple())
-            return "ok"
-
-    def add_peternak(self, peternakModel):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("select * from public.peternakan where id like %s;", (peternakModel.id,))
-            if cursor.fetchone():
-                return "already exists"
-            cursor.execute("INSERT INTO public.peternakan (nama, lokasi, id) VALUES (%s, %s, %s);", peternakModel.getTuple())
-            return "ok"
-
-    def input_batch(self, batchModel):
-        with psycopg.connect(conninfo=Postgres_URI) as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM public.batch_unggas where id like %s;", (id,))
-            if cursor.fetchone():
-                return True
-            return False
 
 DbUtil = DBUtil()
-# print(DbUtil.get_batch_by_id("000001"))
-# print(DbUtil.add_distributor("PT Abdul", "Jakarta", "JKT01"))
