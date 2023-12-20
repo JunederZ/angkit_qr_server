@@ -19,13 +19,12 @@ definitions:
       lokasi:
         type: string
         example: Jakarta
-      id:
-        type: string
-        example: JKT0001
 responses:
   201:
     description: Success add new distributor to database
   400:
     description: missing Parameter
-  403:
+  404:
+    description: foreign key not found
+  409:
     description: already exists
