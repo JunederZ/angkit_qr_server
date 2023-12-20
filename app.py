@@ -1,12 +1,19 @@
 from flask import Flask, request
 from flasgger import Swagger, LazyString, LazyJSONEncoder
 import routes
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SWAGGER'] = {
     'title': 'API Angkit Agro QR',
     'description': 'API documentation for Angkit Agro QR'
 }
+# UPLOAD_FOLDER = '/var/www/angkit/static/'
+# app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER')
+app.config['UPLOAD_FOLDER'] = '/Users/ktsabit/dev/angkit_qr_server/static'
 swagger_config = {
     "headers": [
     ],
@@ -36,6 +43,7 @@ app.add_url_rule('/addDistributor', view_func=routes.add_distributor, methods=['
 app.add_url_rule('/get_all_batches', view_func=routes.get_all_batch, methods=['GET'])
 app.add_url_rule('/get_batches_by_farm', view_func=routes.get_batch_by_farm, methods=['POST'])
 app.add_url_rule('/get_batches_by_dist', view_func=routes.get_batch_by_distributor, methods=['POST'])
+app.add_url_rule('/add_batch_img', view_func=routes.add_image, methods=['POST'])
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True, host="0.0.0.0", port=5001)

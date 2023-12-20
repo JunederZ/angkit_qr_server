@@ -76,6 +76,16 @@ class BatchUnggas(BaseModel):
         table_name = 'batch_unggas'
 
 
+class BatchImages(BaseModel):
+    id = AutoField(primary_key=True)
+    batch_id = ForeignKeyField(BatchUnggas, to_field='id', column_name='batch_id')
+    filename = CharField()
+
+    class Meta:
+        table_name = 'batch_images'
+
+
+
 if __name__ == '__main__':
     db.connect()
-    db.create_tables([Users, Distributor, Peternakan, BatchUnggas])
+    db.create_tables([BatchImages])

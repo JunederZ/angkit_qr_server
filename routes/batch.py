@@ -1,6 +1,7 @@
-from flask import request, make_response
+from flask import request, make_response, current_app
 from database.models import *
 from flasgger import swag_from
+from peewee import *
 import uuid
 from playhouse.shortcuts import model_to_dict, dict_to_model
 
@@ -66,16 +67,24 @@ def get_batch_by_farm():
         'batches': batches,
     }, 200)
 
+
 def add_dist():
     json = request.get_json()
     try:
-        dist = dict_to_model(Distributor, {
-            "id": uuid.uuid4().hex,
-            "username": json["username"],
-            "nama": json["nama"],
-            "lokasi": json["lokasi"],
-        })
-        dist.save()
+        dist = Distributor(
+            id=uuid.uuid4().hex,
+            nama=json['nama'],
+            lokasi=json['lokasi'],
+            user=json['username']
+        )
+        try:
+            dist.save(force_insert=True)
+        except IntegrityError as e:
+            return make_response({
+                'status': 'error',
+                'message': f"usrname {json['username']} doesn't exist",
+            }, 404)
+
     except KeyError as e:
         return make_response({
             'status': 'error',
@@ -87,4 +96,47 @@ def add_dist():
     }, 201)
 
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def add_image():
+    batch_id = request.form.get('batch_id')
+    if not batch_id:
+        return make_response({
+            "status": "batch_id not supplied in json"
+        }, 400)
+    if 'file' not in request.files:
+        return make_response({
+            "status": "no file provided"
+        }, 400)
+
+    file = request.files['file']
+    # if not file:
+    #     return make_response({
+    #         "status": "no file provided"
+    #     }, 400)
+    if not allowed_file(file.filename):
+        return make_response({
+            "status": "file extension must be either png or jpg"
+        }, 400)
+
+    filename = uuid.uuid4().hex + '.' + file.filename.rsplit('.', 1)[1].lower()
+    file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+    batch_image = BatchImages(filename=filename, batch_id=batch_id)
+    print(batch_image)
+    try:
+        batch_image.save()
+    except IntegrityError as e:
+        return make_response({
+            "status": "error",
+            "msg": model_to_dict(batch_image, exclude=[BatchImages.batch_id])
+        }, 400)
+
+    return make_response({
+        "status": "ok"
+    }, 201)
 
