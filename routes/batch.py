@@ -32,7 +32,7 @@ def get_batch_by_distributor():
         }, 400)
     try:
         batches = BatchUnggas.select().where(BatchUnggas.distributor == json.get("distributor_id"))
-        batches = [model_to_dict(i, exclude=[Distributor.user, Peternakan.user]) for i in batches]
+        batches = [model_to_dict(i, exclude=[Distributor.user, Peternakan.user], backrefs=True) for i in batches]
 
     except DoesNotExist:
         return make_response({
@@ -55,7 +55,7 @@ def get_batch_by_farm():
         }, 400)
     try:
         batches = BatchUnggas.select().where(BatchUnggas.peternak == json.get("farm_id"))
-        batches = [model_to_dict(i, exclude=[Distributor.user, Peternakan.user]) for i in batches]
+        batches = [model_to_dict(i, exclude=[Distributor.user, Peternakan.user], backrefs=True) for i in batches]
 
     except DoesNotExist:
         return make_response({
