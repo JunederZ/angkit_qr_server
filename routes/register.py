@@ -1,34 +1,30 @@
 from flask import request, make_response
-import models.peternak_model as PeternakModel
-from database.db_util import DBUtil
 from flasgger import swag_from
+from database.models import *
 
 
 @swag_from('../docs/Register.yml')
 def register():
     datas = request.get_json()
-    username = ''
-    password = ''
-    role = ''
 
     try:
-        username = datas['username']
-        password = datas['password']
-        role = datas['role']
+        if Users.select().where(Users.username == datas['username']).exists():
+            return make_response({
+                'status': 'error',
+                'message': 'user already exists',
+            }, 409)
 
+        data = Users.create(
+            username=datas['username'],
+            password=datas['password'],
+            role=datas['role']
+        )
+        data.save()
     except KeyError as e:
         return make_response({
             'status': 'error',
-            'message': f"can't find data [{e}]",
+            'message': f"Missing Field [{e}]",
         }, 403)
-
-    res = DBUtil().add_user(username, password, role)
-    if res != "success":
-        return make_response({
-            'status': 'error',
-            'message': res,
-        }, 404)
-
     return make_response({
         'status': 'ok',
     }, 201)

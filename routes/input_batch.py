@@ -25,6 +25,7 @@ def inputBatch():
             tgl_mulai=datas['tanggalMulai'],
             tgl_potong=datas['tanggalPotong']
         )
+        data.save()
     except KeyError as e:
         return make_response({
             'status': 'error',
