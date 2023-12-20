@@ -18,7 +18,9 @@ class ISODateField(DateField):
         return value
 
     def python_value(self, value):
-        return value.isoformat()
+        if value:
+            return value.isoformat()
+        return None
 
 
 class BaseModel(Model):
