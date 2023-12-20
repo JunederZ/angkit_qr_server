@@ -26,6 +26,6 @@ responses:
   201:
     description: Success register new user
   400:
-    description: missing Parameter
-  403:
+    description: missing field
+  409:
     description: already exists

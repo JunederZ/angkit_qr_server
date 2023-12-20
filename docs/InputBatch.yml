@@ -39,6 +39,4 @@ responses:
   201:
     description: Success add new batch to database
   400:
-    description: missing Parameter
-  403:
-    description: already exists
+    description: missing field
