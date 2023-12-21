@@ -8,7 +8,13 @@ import uuid
 
 @swag_from('../docs/AddDistributor.yml')
 def add_distributor():
-    datas = request.get_json()
+    try:
+        datas = request.get_json()
+    except Exception as e:
+        return make_response({
+            'status': 'error',
+            'message': f"broken json [{e}]",
+        }, 400)
     data = None
     try:
         if datas['lokasi'] and datas['nama'] and datas['username']:

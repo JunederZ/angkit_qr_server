@@ -6,7 +6,13 @@ from database.models import *
 
 @swag_from('../docs/Register.yml')
 def register():
-    datas = request.get_json()
+    try:
+        datas = request.get_json()
+    except Exception as e:
+        return make_response({
+            'status': 'error',
+            'message': f"broken json [{e}]",
+        }, 400)
 
     try:
         if Users.select().where(Users.username == datas['username']).exists():

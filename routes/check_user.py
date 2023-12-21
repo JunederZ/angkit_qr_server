@@ -4,7 +4,13 @@ from database.models import *
 
 @swag_from('../docs/CheckUser.yml')
 def check_user():
-    json = request.get_json()
+    try:
+        json = request.get_json()
+    except Exception as e:
+        return make_response({
+            'status': 'error',
+            'message': f"broken json [{e}]",
+        }, 400)
     if not json.get("username"):
         return make_response({
             'status': 'error',

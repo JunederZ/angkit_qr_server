@@ -8,7 +8,13 @@ from peewee import *
 
 @swag_from('../docs/InputBatch.yml')
 def inputBatch():
-    datas = request.get_json()
+    try:
+        datas = request.get_json()
+    except Exception as e:
+        return make_response({
+            'status': 'error',
+            'message': f"broken json [{e}]",
+        }, 400)
     try:
         existing_ids = set(BatchUnggas.select(BatchUnggas.id).tuples())
         while True:

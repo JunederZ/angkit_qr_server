@@ -1,0 +1,24 @@
+Remove a user from database.
+---
+tags:
+  - User
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/templateRemoveUser'
+definitions:
+  templateRemoveUser:
+    type: string
+    properties:
+      username:
+        type: string
+        example: user001
+
+responses:
+  200:
+    description: Success remove
+  404:
+    description: Not found

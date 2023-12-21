@@ -1,10 +1,9 @@
 from flask import request, make_response
 from argon2 import PasswordHasher
 import argon2
-from playhouse.shortcuts import model_to_dict
-
 from database.models import *
 from flasgger import swag_from
+
 
 @swag_from('../docs/Login.yml')
 def login():

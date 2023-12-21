@@ -6,7 +6,13 @@ from flasgger import swag_from
 
 @swag_from('../docs/GetBatch.yml')
 def getBatch():
-    json = request.get_json()
+    try:
+        json = request.get_json()
+    except Exception as e:
+        return make_response({
+            'status': 'error',
+            'message': f"broken json [{e}]",
+        }, 400)
     if not json.get("id"):
         return make_response({
             'status': 'error',

@@ -8,7 +8,13 @@ from flasgger import swag_from
 
 @swag_from('../docs/AddPeternakan.yml')
 def add_peternakan():
-    datas = request.get_json()
+    try:
+        datas = request.get_json()
+    except Exception as e:
+        return make_response({
+            'status': 'error',
+            'message': f"broken json [{e}]",
+        }, 400)
     data = None
     try:
         data = Peternakan.create(
