@@ -14,12 +14,18 @@ def login():
 
     user = Users.select().where(Users.username == username)
     userObject = user.first()
-    user_res = model_to_dict(userObject, backrefs=True)
+    site_id = ''
+    if userObject.role == 'Peternakan':
+        site_id = Peternakan.select().where(Peternakan.user == userObject.username).first().id
+    elif userObject.role == 'Distributor':
+        site_id = Distributor.select().where(Distributor.user == userObject.username).first().id
     try:
         if user.exists() and PasswordHasher().verify(password=password, hash=userObject.password):
             return make_response({
                 'status': 'ok',
-                'user': user_res,
+                'user': userObject.username,
+                'role': userObject.role,
+                'id': site_id,
             }, 200)
     except argon2.exceptions.VerifyMismatchError:
         return make_response({
