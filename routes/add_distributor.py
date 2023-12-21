@@ -1,9 +1,10 @@
-from flask import request, make_response
-from flasgger import swag_from
-from playhouse.shortcuts import model_to_dict, dict_to_model
-from database.models import *
-from peewee import *
 import uuid
+
+from flasgger import swag_from
+from flask import request, make_response
+from playhouse.shortcuts import model_to_dict
+
+from database.models import *
 
 
 @swag_from('../docs/AddDistributor.yml')
