@@ -1,0 +1,48 @@
+Update data in the batch.
+---
+tags:
+  - Batch
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    description: Give the id and the field you want to change.
+    schema:
+      $ref: '#/definitions/templateInputBatch'
+definitions:
+  templateInputBatch:
+    type: string
+    properties:
+      id:
+        type: string
+        example: Bebek
+      jenisTernak:
+        type: string
+        example: Bebek
+      peternak:
+        type: string
+        example: FOREIGN KEY PETERNAKAN
+      distributor:
+        type: string
+        example: FOREIGN KEY DISTRIBUTOR
+      beratRata:
+        type: integer
+        example: 9.2
+      tanggalMulai:
+        type: string
+        example: DATE IN ISO FORMAT
+      tanggalPotong:
+        type: string
+        example: DATE IN ISO FORMAT
+      tanggalKemas:
+        type: string
+        example: DATE IN ISO FORMAT
+
+responses:
+  200:
+    description: Success update data
+  400:
+    description: missing ID
+  404:
+    description: ID not found

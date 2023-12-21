@@ -16,7 +16,7 @@ def remove_user():
         return make_response({
             'status': 'ok',
             'message': f'User {username} has been removed'
-        }, 200)
+        }, 204)
     return make_response({
         'status': 'error',
         'message': 'not found'

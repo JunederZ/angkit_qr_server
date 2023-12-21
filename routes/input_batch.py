@@ -23,13 +23,13 @@ def inputBatch():
                 break
         data = BatchUnggas.create(
             id=idBatch,
-            berat_rt_sample=datas['beratRata'],
-            distributor=datas['distributor'],
-            jenis_ternak=datas['jenisTernak'],
-            peternak=datas['peternak'],
-            tgl_kemas=datas['tanggalKemas'],
-            tgl_mulai=datas['tanggalMulai'],
-            tgl_potong=datas['tanggalPotong']
+            berat_rt_sample=datas.get('beratRata'),
+            distributor=datas.get('distributor'),
+            jenis_ternak=datas.get('jenisTernak'),
+            peternak=datas.get('peternak'),
+            tgl_kemas=datas.get('tanggalKemas'),
+            tgl_mulai=datas.get('tanggalMulai'),
+            tgl_potong=datas.get('tanggalPotong')
         )
         data.save()
     except KeyError as e:

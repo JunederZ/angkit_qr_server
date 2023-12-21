@@ -59,12 +59,14 @@ class Peternakan(BaseModel):
 
 class BatchUnggas(BaseModel):
     berat_rt_sample = DoubleField(null=True)
-    distributor = ForeignKeyField(Distributor, column_name='distributor')
+    distributor = ForeignKeyField(Distributor, column_name='distributor', null=True)
     id = CharField(primary_key=True)
-    jenis_ternak = CharField()
-    peternak = ForeignKeyField(Peternakan, column_name='peternak', backref='batches')
+    jenis_ternak = CharField(null=True)
+    nama = CharField(null=True)
+    spesies = CharField(null=True)
+    peternak = ForeignKeyField(Peternakan, column_name='peternak', backref='batches', null=True)
     tgl_kemas = ISODateField(null=True)
-    tgl_mulai = ISODateField()
+    tgl_mulai = ISODateField(null=True)
     tgl_potong = ISODateField(null=True)
 
     class Meta:
