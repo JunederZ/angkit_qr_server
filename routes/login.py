@@ -1,20 +1,30 @@
 from flask import request, make_response
-from database.db_util import DBUtil
+from argon2 import PasswordHasher
+import argon2
+from database.models import *
+from flasgger import swag_from
 
-
+@swag_from('../docs/Login.yml')
 def login():
     json = request.get_json()
     username = json.get('username')
     password = json.get('password')
 
-    user = DBUtil().user_login(username, password)
-    if user != 'User not exists' and user != 'wrong password':
-        print(user)
+    user = Users.select().where(Users.username == username)
+    userObject = user.first()
+    try:
+        if user.exists() and PasswordHasher().verify(password=password, hash=userObject.password):
+            return make_response({
+                'status': 'ok',
+                'username': userObject.username,
+                'role': userObject.role,
+            }, 200)
+    except argon2.exceptions.VerifyMismatchError:
         return make_response({
-            'status': 'ok',
-            'username': user[0],
-            'role': user[2],
-        }, 200)
+            'status': 'error',
+            'message': 'Wrong password'
+        }, 401)
     return make_response({
-        'status': user,
-    }, 200)
+        'status': 'error',
+        'message': 'not found'
+    }, 404)

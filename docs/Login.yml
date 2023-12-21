@@ -1,0 +1,41 @@
+check user credential.
+---
+tags:
+  - User
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/templateLogin'
+definitions:
+  templateLogin:
+    type: string
+    properties:
+      username:
+        type: string
+        example: user001
+      password:
+        type: string
+        example: abc123
+responses:
+  201:
+    description: success
+    schema:
+      id: User
+      type: object
+      properties:
+        username:
+          type: string
+          example: user001
+        status:
+          type: string
+          example: ok
+        role:
+          type: string
+          example: peternak
+  401:
+    description: wrong password
+  404:
+    description: user not found
