@@ -34,11 +34,6 @@ def inputBatch():
             tgl_potong=datas.get('tanggalPotong')
         )
         data.save()
-    except KeyError as e:
-        return make_response({
-            'status': 'error',
-            'message': f"Missing field [{e}]",
-        }, 400)
     except IntegrityError as e:
         if "violates foreign key" in f"{e}":
             return make_response({
