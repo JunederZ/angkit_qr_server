@@ -22,6 +22,12 @@ definitions:
       distributor:
         type: string
         example: FOREIGN KEY DISTRIBUTOR
+      nama:
+        type: string
+        example: Batch 1 - kandang A
+      spesies:
+        type: nama
+        example: Bebek Kampung
       beratRata:
         type: integer
         example: 9.2

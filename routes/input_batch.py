@@ -26,6 +26,8 @@ def inputBatch():
             berat_rt_sample=datas.get('beratRata'),
             distributor=datas.get('distributor'),
             jenis_ternak=datas.get('jenisTernak'),
+            nama=datas.get('nama'),
+            spesies=datas.get('spesies'),
             peternak=datas.get('peternak'),
             tgl_kemas=datas.get('tanggalKemas'),
             tgl_mulai=datas.get('tanggalMulai'),
