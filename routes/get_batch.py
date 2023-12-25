@@ -26,5 +26,5 @@ def getBatch():
         }, 404)
     return make_response({
         "status": "ok",
-        'data': model_to_dict(data.get(), exclude=[Peternakan.user, Distributor.user]),
+        'data': model_to_dict(data.get(), exclude=[Peternakan.user, Distributor.user], backrefs=True),
     }, 200)
