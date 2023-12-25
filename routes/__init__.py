@@ -7,5 +7,6 @@ from routes.check_user import check_user
 from routes.register import register
 from routes.remove_user import remove_user
 from routes.update_batch import update_batch
+from routes.update_user import update_user
 from routes.batch import *
 

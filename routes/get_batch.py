@@ -1,7 +1,7 @@
-from flask import request, make_response
-from database.models import *
-from playhouse.shortcuts import model_to_dict
 from flasgger import swag_from
+from flask import request, make_response
+from playhouse.shortcuts import model_to_dict
+from database.models import *
 
 
 @swag_from('../docs/GetBatch.yml')

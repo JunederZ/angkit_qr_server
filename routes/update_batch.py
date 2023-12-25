@@ -2,7 +2,6 @@ from flask import request, make_response
 from flasgger import swag_from
 from playhouse.shortcuts import model_to_dict
 from database.models import *
-from peewee import *
 
 @swag_from('../docs/UpdateBatch.yml')
 def update_batch():
