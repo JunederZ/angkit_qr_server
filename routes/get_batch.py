@@ -7,7 +7,6 @@ from database.models import *
 @swag_from('../docs/GetBatch.yml')
 def getBatch():
     try:
-        # id = request.args.get("id")
         json = request.get_json()
     except Exception as e:
         return make_response({

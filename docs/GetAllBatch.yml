@@ -21,7 +21,7 @@ responses:
   201:
     description: Success
     schema:
-      id: responseGetBatch
+      id: responseGetBatches
       properties:
         data:
           type: string

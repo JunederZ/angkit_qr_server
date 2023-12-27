@@ -8,7 +8,7 @@ parameters:
     in: body
     required: true
     schema:
-      $ref: '#/definitions/responseGetBatch'
+      $ref: '#/definitions/templateGetBatch'
 definitions:
   templateGetBatch:
     type: string
@@ -26,14 +26,14 @@ responses:
         data:
           type: string
           example:
-            nama: kandang A
             images: listOfImages
             beratRata: 9.2
             distributor:
               id: DTB001
               lokasi: Bogor
               nama: PT Ahmad
-            id: "000001"
+            id: "BBK001"
+            nama: kandang A
             jenisTernak: bebek
             spesies: Bebek Madura
             peternak:
