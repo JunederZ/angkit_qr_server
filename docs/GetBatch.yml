@@ -3,13 +3,12 @@ Retrieve a batch from database with ID.
 tags:
   - Batch
 parameters:
-  - name: Batch Id
-    in: query
+  - name: Body
+    type: json
+    in: body
     required: true
-    description: The ID of the batch to return.
     schema:
-      type: string
-      example: BATCH1
+      $ref: '#/definitions/templateGetBatch'
 definitions:
   templateGetBatch:
     type: string
@@ -27,6 +26,8 @@ responses:
         data:
           type: string
           example:
+            nama: kandang A
+            images: listOfImages
             beratRata: 9.2
             distributor:
               id: DTB001
@@ -34,6 +35,7 @@ responses:
               nama: PT Ahmad
             id: "000001"
             jenisTernak: bebek
+            spesies: Bebek Madura
             peternak:
               id: PTK001
               lokasi: Bogor
