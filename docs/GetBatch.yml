@@ -8,7 +8,7 @@ parameters:
     in: body
     required: true
     schema:
-      $ref: '#/definitions/templateGetBatch'
+      $ref: '#/definitions/responseGetBatch'
 definitions:
   templateGetBatch:
     type: string
