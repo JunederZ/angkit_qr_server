@@ -1,0 +1,36 @@
+Update data in the batch.
+---
+tags:
+  - Batch
+parameters:
+  - name: Body
+    type: json
+    in: body
+    required: true
+    description: Give the id and the field you want to change.
+    schema:
+      $ref: '#/definitions/templateUpdateUser'
+definitions:
+  templateUpdateUser:
+    type: string
+    properties:
+      username:
+        type: string
+        example: User001
+      password:
+        type: string
+        example: newPass
+      lokasi:
+        type: string
+        example: new distributor/peternakan location
+      nama:
+        type: string
+        example: new distributor/peternakan name
+
+responses:
+  200:
+    description: Success update data
+  400:
+    description: missing username
+  404:
+    description: username not found

@@ -86,10 +86,7 @@ def add_image():
         }, 400)
 
     file = request.files['file']
-    # if not file:
-    #     return make_response({
-    #         "status": "no file provided"
-    #     }, 400)
+
     if not allowed_file(file.filename):
         return make_response({
             "status": "file extension must be either png or jpg"
