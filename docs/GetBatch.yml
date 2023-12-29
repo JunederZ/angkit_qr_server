@@ -3,19 +3,10 @@ Retrieve a batch from database with ID.
 tags:
   - Batch
 parameters:
-  - name: Body
-    type: json
-    in: body
+  - name: Batch ID
+    description: the batch ID to get retrieve
+    in: path
     required: true
-    schema:
-      $ref: '#/definitions/templateGetBatch'
-definitions:
-  templateGetBatch:
-    type: string
-    properties:
-      id:
-        type: string
-        example: BBK001
 
 responses:
   201:
@@ -26,7 +17,12 @@ responses:
         data:
           type: string
           example:
-            images: listOfImages
+            images: [
+              {
+                filename: "add1b9acfe5sa32730b625af3d.jpg",
+                id: 1
+              }
+            ]
             beratRata: 9.2
             distributor:
               id: DTB001

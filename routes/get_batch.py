@@ -5,20 +5,13 @@ from database.models import *
 
 
 @swag_from('../docs/GetBatch.yml')
-def getBatch():
-    try:
-        json = request.get_json()
-    except Exception as e:
-        return make_response({
-            'status': 'error',
-            'message': f"broken json [{e}]",
-        }, 400)
-    if not json.get("id"):
+def getBatch(batchID):
+    if not batchID:
         return make_response({
             'status': 'error',
             'message': "Please provide the ID"
         }, 400)
-    data = BatchUnggas.select().where(BatchUnggas.id == json.get("id"))
+    data = BatchUnggas.select().where(BatchUnggas.id == batchID)
     if not data.exists():
         return make_response({
             'status': 'error',
