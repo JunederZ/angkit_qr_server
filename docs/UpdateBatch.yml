@@ -16,7 +16,7 @@ definitions:
     properties:
       id:
         type: string
-        example: Bebek
+        example: B00001
       jenisTernak:
         type: string
         example: Bebek

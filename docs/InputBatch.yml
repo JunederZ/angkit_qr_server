@@ -13,9 +13,6 @@ definitions:
   templateInputBatch:
     type: string
     properties:
-      id:
-        type: string
-        example: Bebek
       jenisTernak:
         type: string
         example: Bebek
