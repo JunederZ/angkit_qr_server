@@ -61,8 +61,6 @@ def inputBatch():
 def generateQrCode(datas):
     qrcode = segno.make(datas, micro=False)
     qrname = uuid.uuid4().hex + ".png"
-    # print(current_app.config['UPLOAD_FOLDER'])
-    # saveto = os.path.join("/home/juned/Ned Files/Projects/PycharmProjects/angkit_qr_server/static/", qrname + ".png")
     saveto = os.path.join(current_app.config['QR_FOLDER'], qrname)
     qrcode.save(saveto, scale=10)
     return qrname
