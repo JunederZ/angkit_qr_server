@@ -68,6 +68,7 @@ class BatchUnggas(BaseModel):
     tgl_kemas = ISODateField(null=True)
     tgl_mulai = ISODateField(null=True)
     tgl_potong = ISODateField(null=True)
+    qrcode = CharField(null=True)
 
     class Meta:
         table_name = 'batch_unggas'

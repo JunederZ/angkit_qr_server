@@ -1,7 +1,7 @@
 Update data in the batch.
 ---
 tags:
-  - Batch
+  - User
 parameters:
   - name: Body
     type: json

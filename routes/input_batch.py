@@ -1,10 +1,14 @@
-from flask import request, make_response
+from flask import request, make_response, current_app
 from flasgger import swag_from
 from playhouse.shortcuts import model_to_dict
+import os
+import uuid
 import random
 import string
+import segno
 from database.models import *
 from peewee import *
+
 
 @swag_from('../docs/InputBatch.yml')
 def inputBatch():
@@ -21,6 +25,7 @@ def inputBatch():
             idBatch = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6))
             if idBatch not in existing_ids:
                 break
+        qrpath = generateQrCode(id)
         data = BatchUnggas.create(
             id=idBatch,
             berat_rt_sample=datas.get('beratRata'),
@@ -31,7 +36,8 @@ def inputBatch():
             peternak=datas.get('peternak'),
             tgl_kemas=datas.get('tanggalKemas'),
             tgl_mulai=datas.get('tanggalMulai'),
-            tgl_potong=datas.get('tanggalPotong')
+            tgl_potong=datas.get('tanggalPotong'),
+            qrcode=qrpath
         )
         data.save()
     except IntegrityError as e:
@@ -50,3 +56,13 @@ def inputBatch():
         'status': 'ok',
         'data': model_to_dict(data, exclude=[Peternakan.user, Distributor.user])
     }, 201)
+
+
+def generateQrCode(datas):
+    qrcode = segno.make(datas, micro=False)
+    qrname = uuid.uuid4().hex + ".png"
+    # print(current_app.config['UPLOAD_FOLDER'])
+    # saveto = os.path.join("/home/juned/Ned Files/Projects/PycharmProjects/angkit_qr_server/static/", qrname + ".png")
+    saveto = os.path.join(current_app.config['QR_FOLDER'], qrname)
+    qrcode.save(saveto, scale=10)
+    return qrname

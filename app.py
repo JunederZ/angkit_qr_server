@@ -11,7 +11,8 @@ app.config['SWAGGER'] = {
     'title': 'API Angkit Agro QR',
     'description': 'API documentation for Angkit Agro QR'
 }
-app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLER')
+app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER')
+app.config['QR_FOLDER'] = os.getenv('QR_FOLDER')
 swagger_config = {
     "headers": [
     ],
