@@ -71,7 +71,7 @@ def generateQrCode(datas):
     out.seek(0)
     img = Image.open(out)
     text = ImageDraw.Draw(img)
-    myFont = ImageFont.truetype("/home/veen/angkit_qr_server/database/G_ari_bd.TTF", 30)
+    myFont = ImageFont.truetype(current_app.config['FONT_PATH'], 30)
     text.text((95, 250), datas, font=myFont)
     img.save(saveto)
     return qrname

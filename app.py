@@ -13,6 +13,7 @@ app.config['SWAGGER'] = {
 }
 app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER')
 app.config['QR_FOLDER'] = os.getenv('QR_FOLDER')
+app.config['FONT_PATH'] = os.getenv('FONT_PATH')
 swagger_config = {
     "headers": [
     ],
