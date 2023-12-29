@@ -1,13 +1,17 @@
 from flask import request, make_response, current_app
-from flasgger import swag_from
 from playhouse.shortcuts import model_to_dict
-import os
-import uuid
+from flasgger import swag_from
+from database.models import *
+from peewee import *
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 import random
 import string
 import segno
-from database.models import *
-from peewee import *
+import uuid
+import os
+import io
 
 
 @swag_from('../docs/InputBatch.yml')
@@ -60,7 +64,14 @@ def inputBatch():
 
 def generateQrCode(datas):
     qrcode = segno.make(datas, micro=False)
+    out = io.BytesIO()
     qrname = uuid.uuid4().hex + ".png"
     saveto = os.path.join(current_app.config['QR_FOLDER'], qrname)
-    qrcode.save(saveto, scale=10)
+    qrcode.save(out, kind='png', scale=10)
+    out.seek(0)
+    img = Image.open(out)
+    text = ImageDraw.Draw(img)
+    myFont = ImageFont.truetype("../database/G_ari_bd.TTF", 30)
+    text.text((95, 250), datas, font=myFont)
+    img.save(saveto)
     return qrname
