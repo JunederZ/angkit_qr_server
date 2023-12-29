@@ -25,7 +25,7 @@ def inputBatch():
             idBatch = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6))
             if idBatch not in existing_ids:
                 break
-        qrpath = generateQrCode(id)
+        qrpath = generateQrCode(idBatch)
         data = BatchUnggas.create(
             id=idBatch,
             berat_rt_sample=datas.get('beratRata'),
