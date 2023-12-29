@@ -9,9 +9,9 @@ parameters:
     required: true
     description: Give the id and the field you want to change.
     schema:
-      $ref: '#/definitions/templateInputBatch'
+      $ref: '#/definitions/templateUpdateBatch'
 definitions:
-  templateInputBatch:
+  templateUpdateBatch:
     type: string
     properties:
       id:
@@ -26,6 +26,12 @@ definitions:
       distributor:
         type: string
         example: FOREIGN KEY DISTRIBUTOR
+      nama:
+        type: string
+        example: Batch 1 - kandang A
+      spesies:
+        type: nama
+        example: Bebek Kampung
       beratRata:
         type: integer
         example: 9.2
