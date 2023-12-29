@@ -31,7 +31,8 @@ def update_batch():
         'peternak': datas.get('peternak'),
         'tgl_kemas': datas.get('tanggalKemas'),
         'tgl_mulai': datas.get('tanggalMulai'),
-        'tgl_potong': datas.get('tanggalPotong')
+        'tgl_potong': datas.get('tanggalPotong'),
+        'nama': datas.get('nama'),
     }
     fields_to_update = {k: v for k, v in fields_to_update.items() if v is not None}
 
