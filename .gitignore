@@ -1,4 +1,6 @@
 /.env
+.venv
+.idea
 /.idea/dataSources.xml
 static
 __pycache__/app.cpython-310.pyc
